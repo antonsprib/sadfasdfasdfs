@@ -1,19 +1,33 @@
 package lv.helloit.test;
 
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping(value = "/hello")
-public class HelloController {
+import java.util.*;
 
-    @RequestMapping(value = "/hello")
-    public User handleHello() {
-        return new User("Vasja", "P");
+@RestController
+@RequestMapping(value = "/users")
+public class HelloController {
+    @Autowired
+    private UserService userService;
+
+    @PostMapping
+    public void add(@RequestBody User user) {
+        userService.add(user);
     }
 
-    @RequestMapping("/goodbye")
-    public String handleGoodbye() {
-        return "Goodbye, world";
+    @GetMapping
+    public Collection<User> users() {
+        return userService.users();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete (@PathVariable Integer id) {
+        userService.delete(id);
+    }
+
+    @PutMapping
+    public void update(@RequestParam Integer id, @RequestParam User u) {
+        userService.update(id, u);
     }
 }
