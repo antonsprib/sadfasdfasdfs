@@ -11,13 +11,14 @@ function loadTasks() {
 }
 
 function addTask(task) {
-    const div = document.createElement("div");
-    div.innerHTML =
-        "<span>TITLE: " + task.title + "</span><br>" +
-        "<span>DESCRIPTION: " + task.description + "</span><br>" +
-        "<span>ID: " + task.id + " </span><br>" +
-        "<span>User: " + task.assignedUserId + " </span><br><br>";
-    document.getElementsByTagName("body")[0].appendChild(div);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+        <td>${task.id}</td>
+        <td>${task.title}</td>
+        <td>${task.description}</td>
+        <td>${task.assignedUserId}</td>
+    `;
+    document.getElementById("table-body").appendChild(tr);
 }
 
 function createTask() {
