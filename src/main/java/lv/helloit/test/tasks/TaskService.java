@@ -32,6 +32,8 @@ public class TaskService {
     public void assign(Long taskId, Long userId) {
         if (userService.userExists(userId)) {
             taskStorage.get(taskId).setAssignedUserId(userId);
+        } else {
+            throw new IllegalArgumentException("User doesn't exist");
         }
     }
 }
