@@ -42,6 +42,21 @@ public class TaskService {
         return taskStorage.get(id);
     }
 
+    public boolean update(Long taskId, Task newTask) {
+        if (!taskId.equals(newTask.getId()) && newTask.getId() != null) {
+            return false;
+        }
+
+        if (taskStorage.containsKey(taskId)) {
+            Task oldTask = taskStorage.get(taskId);
+            oldTask.setTitle(newTask.getTitle());
+            oldTask.setDescription(newTask.getDescription());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean assign(Long taskId, Long userId) {
         if (userService.userExists(userId)) {
             taskStorage.get(taskId).setAssignedUserId(userId);

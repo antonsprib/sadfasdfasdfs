@@ -36,7 +36,12 @@ public class TaskController {
         return taskService.deleteTask(id);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
+    public boolean update(@PathVariable Long id, @RequestBody Task task) {
+        return taskService.update(id, task);
+    }
+
+    @PutMapping(value = "/assign")
     public boolean assign(@RequestParam Long taskId, @RequestParam Long userId) {
         return taskService.assign(taskId, userId);
     }

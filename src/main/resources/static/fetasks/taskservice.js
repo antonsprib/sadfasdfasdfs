@@ -26,7 +26,6 @@ function addTask(task) {
 }
 
 
-
 function createTask() {
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
@@ -44,7 +43,6 @@ function createTask() {
         window.location.href = "/index.html";
     });
 }
-
 
 
 function deleteTask(id) {
@@ -69,5 +67,30 @@ function loadTaskForEdit() {
         .then(taskFromServer => {
             document.getElementById("title").value = taskFromServer.title;
             document.getElementById("description").value = taskFromServer.description;
+        });
+}
+
+
+function updateTask() {
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const taskId = new URL(window.location.href).searchParams.get("taskId");
+
+    fetch("/tasks/" + taskId, {
+        method: "put",
+        body: JSON.stringify({
+            title: title,
+            description: description
+        }),
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+        }
+    }).then(resp => resp.json())
+        .then(successful => {
+            if (successful) {
+                window.location.href = "/index.html";
+            } else {
+                alert("Failed to update");
+            }
         });
 }
