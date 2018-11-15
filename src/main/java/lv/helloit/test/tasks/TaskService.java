@@ -25,15 +25,29 @@ public class TaskService {
         return lastId;
     }
 
+    public boolean deleteTask(Long id) {
+        if (taskStorage.containsKey(id)) {
+            taskStorage.remove(id);
+            return true;
+        }
+
+        return false;
+    }
+
     public List<Task> get() {
         return new ArrayList<>(taskStorage.values());
     }
 
-    public void assign(Long taskId, Long userId) {
+    public Task get(Long id) {
+        return taskStorage.get(id);
+    }
+
+    public boolean assign(Long taskId, Long userId) {
         if (userService.userExists(userId)) {
             taskStorage.get(taskId).setAssignedUserId(userId);
+            return true;
         } else {
-            throw new IllegalArgumentException("User doesn't exist");
+            return false;
         }
     }
 }

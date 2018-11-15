@@ -17,8 +17,13 @@ public class TaskController {
 
     @GetMapping
     public Collection<Task> get() {
-        LOGGER.info("Get user request");
+        LOGGER.info("Get task request");
         return taskService.get();
+    }
+
+    @GetMapping(value = "/{id}")
+    public Task getById(@PathVariable Long id) {
+        return taskService.get(id);
     }
 
     @PostMapping
@@ -26,8 +31,13 @@ public class TaskController {
         taskService.addTask(t);
     }
 
+    @DeleteMapping
+    public boolean delete(@RequestParam(value = "taskId") Long id) {
+        return taskService.deleteTask(id);
+    }
+
     @PutMapping
-    public void assign(@RequestParam Long taskId, @RequestParam Long userId) {
-        taskService.assign(taskId, userId);
+    public boolean assign(@RequestParam Long taskId, @RequestParam Long userId) {
+        return taskService.assign(taskId, userId);
     }
 }

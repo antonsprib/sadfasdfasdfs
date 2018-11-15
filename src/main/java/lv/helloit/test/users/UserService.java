@@ -7,7 +7,7 @@ import java.util.*;
 @Component
 public class UserService {
     private Map<Long, User> userMap = new HashMap<>();
-    private Long lastId = 1L;
+    private Long lastId = 0L;
 
     public Long add(User user) {
         lastId++;

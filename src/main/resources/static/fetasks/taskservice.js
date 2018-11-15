@@ -17,9 +17,15 @@ function addTask(task) {
         <td>${task.title}</td>
         <td>${task.description}</td>
         <td>${task.assignedUserId}</td>
+        <td>
+            <button onclick="deleteTask(${task.id})">Delete</button>
+            <a href="/fetasks/editTask.html?taskId=${task.id}">Edit</a>
+        </td>
     `;
     document.getElementById("table-body").appendChild(tr);
 }
+
+
 
 function createTask() {
     const title = document.getElementById("title").value;
@@ -37,4 +43,31 @@ function createTask() {
     }).then(() => {
         window.location.href = "/index.html";
     });
+}
+
+
+
+function deleteTask(id) {
+    fetch("/tasks?taskId=" + id, {
+        method: "delete"
+    }).then((resp) => resp.json()
+    ).then(successful => {
+        if (successful === true) {
+            window.location.reload();
+        } else {
+            alert("Delete failed");
+        }
+    });
+}
+
+
+function loadTaskForEdit() {
+    const taskId = new URL(window.location.href).searchParams.get("taskId");
+
+    fetch("/tasks/" + taskId)
+        .then(resp => resp.json())
+        .then(taskFromServer => {
+            document.getElementById("title").value = taskFromServer.title;
+            document.getElementById("description").value = taskFromServer.description;
+        });
 }
