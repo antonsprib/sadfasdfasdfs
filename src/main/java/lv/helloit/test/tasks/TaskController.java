@@ -16,13 +16,13 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public Collection<Task> get() {
+    public Collection<TaskView> get() {
         LOGGER.info("Get task request");
         return taskService.get();
     }
 
     @GetMapping(value = "/{id}")
-    public Task getById(@PathVariable Long id) {
+    public TaskView getById(@PathVariable Long id) {
         return taskService.get(id);
     }
 

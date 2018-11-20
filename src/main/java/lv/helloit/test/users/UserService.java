@@ -24,6 +24,10 @@ public class UserService {
         return new ArrayList<>(userMap.values());
     }
 
+    public User get(Long id) {
+        return userMap.get(id);
+    }
+
     public void delete (Long id) {
         userMap.remove(id);
     }

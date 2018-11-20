@@ -1,10 +1,12 @@
 package lv.helloit.test.tasks;
 
+import lv.helloit.test.users.User;
 import lv.helloit.test.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class TaskService {
@@ -34,12 +36,25 @@ public class TaskService {
         return false;
     }
 
-    public List<Task> get() {
-        return new ArrayList<>(taskStorage.values());
+    public List<TaskView> get() {
+        return taskStorage.values().stream().map(this::mapToTaskView).collect(Collectors.toList());
     }
 
-    public Task get(Long id) {
-        return taskStorage.get(id);
+    public TaskView get(Long id) {
+        Task task = taskStorage.get(id);
+
+        return mapToTaskView(task);
+    }
+
+    private TaskView mapToTaskView(Task task) {
+        User user = userService.get(task.getAssignedUserId());
+
+        return new TaskView(
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getAssignedUserId(),
+                user == null ? null : user.name + " " + user.lastName);
     }
 
     public boolean update(Long taskId, Task newTask) {
