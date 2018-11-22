@@ -11,25 +11,26 @@ import java.util.stream.Collectors;
 @Component
 public class TaskService {
     private final UserService userService;
+    private final TasksDAO tasksDAO;
 
-    private Map<Long, Task> taskStorage = new HashMap<>();
     private Long lastId = 0L;
 
     @Autowired
-    public TaskService(UserService userService) {
+    public TaskService(UserService userService, TasksDAO tasksDAO) {
         this.userService = userService;
+        this.tasksDAO = tasksDAO;
     }
 
     public Long addTask(Task t) {
         lastId++;
         t.setId(lastId);
-        taskStorage.put(lastId, t);
+        tasksDAO.insert(t);
         return lastId;
     }
 
     public boolean deleteTask(Long id) {
-        if (taskStorage.containsKey(id)) {
-            taskStorage.remove(id);
+        if (tasksDAO.getById(id).isPresent()) {
+            tasksDAO.delete(id);
             return true;
         }
 
@@ -37,13 +38,17 @@ public class TaskService {
     }
 
     public List<TaskView> get() {
-        return taskStorage.values().stream().map(this::mapToTaskView).collect(Collectors.toList());
+        return tasksDAO.getAll().stream().map(this::mapToTaskView).collect(Collectors.toList());
     }
 
     public TaskView get(Long id) {
-        Task task = taskStorage.get(id);
+        Optional<Task> task = tasksDAO.getById(id);
 
-        return mapToTaskView(task);
+        if (task.isPresent()) {
+            return mapToTaskView(task.get());
+        } else {
+            return null;
+        }
     }
 
     private TaskView mapToTaskView(Task task) {
@@ -62,19 +67,21 @@ public class TaskService {
             return false;
         }
 
-        if (taskStorage.containsKey(taskId)) {
-            Task oldTask = taskStorage.get(taskId);
-            oldTask.setTitle(newTask.getTitle());
-            oldTask.setDescription(newTask.getDescription());
-            return true;
-        } else {
-            return false;
+        Optional<Task> oldTask = tasksDAO.getById(taskId);
+        if (oldTask.isPresent()) {
+            tasksDAO.update(taskId, newTask);
         }
+        return true;
     }
 
     public boolean assign(Long taskId, Long userId) {
-        if (userService.userExists(userId)) {
-            taskStorage.get(taskId).setAssignedUserId(userId);
+        Optional<Task> task = tasksDAO.getById(taskId);
+
+        if (task.isPresent()) {
+            Task unwrapped = task.get();
+            unwrapped.setAssignedUserId(userId);
+
+            tasksDAO.update(taskId, unwrapped);
             return true;
         } else {
             return false;
