@@ -1,11 +1,20 @@
 package lv.helloit.test.tasks;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "M_TASKS")
 public class Task {
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Long id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "description")
     private String description;
+    @Column(name = "assigned_user_id")
     private Long assignedUserId;
 
     public Task() {
@@ -27,6 +36,16 @@ public class Task {
                 Objects.equals(title, task.title) &&
                 Objects.equals(description, task.description) &&
                 Objects.equals(assignedUserId, task.assignedUserId);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", assignedUserId=" + assignedUserId +
+                '}';
     }
 
     @Override

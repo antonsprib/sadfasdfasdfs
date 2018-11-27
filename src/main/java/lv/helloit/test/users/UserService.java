@@ -11,7 +11,7 @@ public class UserService {
 
     public Long add(User user) {
         lastId++;
-        user.id = lastId;
+        user.setId(lastId);
         userMap.put(lastId, user);
         return lastId;
     }

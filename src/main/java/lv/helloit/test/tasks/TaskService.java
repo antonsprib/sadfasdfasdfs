@@ -59,7 +59,7 @@ public class TaskService {
                 task.getTitle(),
                 task.getDescription(),
                 task.getAssignedUserId(),
-                user == null ? null : user.name + " " + user.lastName);
+                user == null ? null : user.getName() + " " + user.getLastName());
     }
 
     public boolean update(Long taskId, Task newTask) {
