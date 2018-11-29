@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
     private final UserService userService;
-    private final TasksDAO tasksDAO;
+    private final TasksDAOImplementation tasksDAO;
 
     @Autowired
-    public TaskService(UserService userService, TasksDAO tasksDAO) {
+    public TaskService(UserService userService, TasksDAOImplementation tasksDAO) {
         this.userService = userService;
         this.tasksDAO = tasksDAO;
     }
@@ -26,8 +26,8 @@ public class TaskService {
     }
 
     public boolean deleteTask(Long id) {
-        if (tasksDAO.getById(id).isPresent()) {
-            tasksDAO.delete(id);
+        if (tasksDAO.getById(id, Task.class).isPresent()) {
+            tasksDAO.delete(id, Task.class);
             return true;
         }
 
