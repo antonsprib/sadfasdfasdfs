@@ -2,6 +2,7 @@ package lv.helloit.test.tasks;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,8 +46,16 @@ public class TasksDAOImplementation implements TasksDAO {
     }
 
     @Override
-    public void insert(Task task) {
-        // todo implement
+    public Long insert(Task task) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        session.save(task);
+
+        tx.commit();
+        session.close();
+
+        return task.getId();
     }
 
     @Override

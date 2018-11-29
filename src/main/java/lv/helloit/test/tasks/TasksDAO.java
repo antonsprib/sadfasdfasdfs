@@ -8,7 +8,7 @@ public interface TasksDAO {
 
     Optional<Task> getById(Long id);
 
-    void insert(Task task);
+    Long insert(Task task);
 
     void delete(Long id);
 

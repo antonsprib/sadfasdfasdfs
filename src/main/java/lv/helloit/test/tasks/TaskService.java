@@ -13,8 +13,6 @@ public class TaskService {
     private final UserService userService;
     private final TasksDAO tasksDAO;
 
-    private Long lastId = 0L;
-
     @Autowired
     public TaskService(UserService userService, TasksDAO tasksDAO) {
         this.userService = userService;
@@ -22,10 +20,8 @@ public class TaskService {
     }
 
     public Long addTask(Task t) {
-        lastId++;
-        t.setId(lastId);
-        tasksDAO.insert(t);
-        return lastId;
+        t.setCreatedDate(new Date());
+        return tasksDAO.insert(t);
     }
 
     public boolean deleteTask(Long id) {
@@ -59,6 +55,7 @@ public class TaskService {
                 task.getTitle(),
                 task.getDescription(),
                 task.getAssignedUserId(),
+                task.getCreatedDate(),
                 user == null ? null : user.getName() + " " + user.getLastName());
     }
 

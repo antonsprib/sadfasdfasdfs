@@ -23,8 +23,9 @@ public class TaskDAOTestImplementation implements TasksDAO {
     }
 
     @Override
-    public void insert(Task task) {
+    public Long insert(Task task) {
         t = task;
+        return null;
     }
 
     @Override

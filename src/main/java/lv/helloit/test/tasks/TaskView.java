@@ -1,5 +1,7 @@
 package lv.helloit.test.tasks;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class TaskView extends Task {
@@ -12,8 +14,8 @@ public class TaskView extends Task {
         this.username = username;
     }
 
-    public TaskView(Long id, String title, String description, Long assignedUserId, String username) {
-        super(id, title, description, assignedUserId);
+    public TaskView(Long id, String title, String description, Long assignedUserId, Date date, String username) {
+        super(id, title, description, assignedUserId, date);
         this.username = username;
     }
 
