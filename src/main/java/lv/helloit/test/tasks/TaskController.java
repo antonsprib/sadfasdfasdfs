@@ -38,7 +38,9 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public boolean update(@PathVariable Long id, @RequestBody Task task) {
-        return taskService.update(id, task);
+        task.setId(id);
+
+        return taskService.update(task);
     }
 
     @PutMapping(value = "/assign")

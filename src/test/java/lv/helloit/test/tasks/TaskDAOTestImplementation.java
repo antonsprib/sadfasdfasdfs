@@ -34,7 +34,7 @@ public class TaskDAOTestImplementation implements TasksDAO {
     }
 
     @Override
-    public void update(Long taskId, Task task) {
+    public void update(Task task) {
 
     }
 }

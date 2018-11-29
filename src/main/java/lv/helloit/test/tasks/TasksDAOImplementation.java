@@ -4,15 +4,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class TasksDAOImplementation implements TasksDAO {
     @Autowired
     private SessionFactory sessionFactory;
@@ -50,8 +49,6 @@ public class TasksDAOImplementation implements TasksDAO {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
-        session.save(task);
-
         tx.commit();
         session.close();
 
@@ -60,11 +57,24 @@ public class TasksDAOImplementation implements TasksDAO {
 
     @Override
     public void delete(Long id) {
-        // todo implement
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Task task = this.getById(id).get();
+        session.delete(task);
+
+        tx.commit();
+        session.close();
     }
 
     @Override
-    public void update(Long taskId, Task task) {
-        // todo implement
+    public void update(Task task) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        session.update(task);
+
+        tx.commit();
+        session.close();
     }
 }

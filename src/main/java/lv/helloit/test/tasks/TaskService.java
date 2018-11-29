@@ -4,11 +4,12 @@ import lv.helloit.test.users.User;
 import lv.helloit.test.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class TaskService {
     private final UserService userService;
     private final TasksDAO tasksDAO;
@@ -59,15 +60,8 @@ public class TaskService {
                 user == null ? null : user.getName() + " " + user.getLastName());
     }
 
-    public boolean update(Long taskId, Task newTask) {
-        if (!taskId.equals(newTask.getId()) && newTask.getId() != null) {
-            return false;
-        }
-
-        Optional<Task> oldTask = tasksDAO.getById(taskId);
-        if (oldTask.isPresent()) {
-            tasksDAO.update(taskId, newTask);
-        }
+    public boolean update(Task newTask) {
+        tasksDAO.update(newTask);
         return true;
     }
 
@@ -78,7 +72,7 @@ public class TaskService {
             Task unwrapped = task.get();
             unwrapped.setAssignedUserId(userId);
 
-            tasksDAO.update(taskId, unwrapped);
+            tasksDAO.update(unwrapped);
             return true;
         } else {
             return false;
