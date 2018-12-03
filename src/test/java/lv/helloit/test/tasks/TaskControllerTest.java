@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TaskControllerTest {
@@ -16,12 +20,17 @@ public class TaskControllerTest {
 
     @Test
     public void shouldCreateTask() {
-        taskController.create(new Task(null, "Task from test", "descr", null));
+        Task input = new Task();
+        input.setCreatedDate(new Date());
+        input.setTitle("Task from test");
+        input.setDescription("descr");
 
-        Task task = taskController.getById(1L);
+        taskController.create(input);
+        Optional<Task> task = taskController.getById(1L);
 
-        assertThat(task.getTitle()).isEqualTo("Task from test");
-        assertThat(task.getDescription()).isEqualTo("descr");
-        assertThat(task.getAssignedUserId()).isNull();
+        assertThat(task).isPresent();
+        assertThat(task.get().getTitle()).isEqualTo("Task from test");
+        assertThat(task.get().getDescription()).isEqualTo("descr");
+        assertThat(task.get().getUser().getId()).isNull();
     }
 }

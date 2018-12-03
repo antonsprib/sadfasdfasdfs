@@ -15,10 +15,6 @@ public class UserServiceTest {
 
 
 
-    @Before
-    public void setUp() {
-        victim = new UserService(userDaoImplementation);
-    }
 
     @Test
     public void shouldAddNewUser() {

@@ -1,6 +1,8 @@
 package lv.helloit.test.users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lv.helloit.test.tasks.Task;
 
 import javax.persistence.*;
@@ -23,7 +25,6 @@ public class User {
     private Integer age;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonIgnore
     private List<Task> tasks;
 
     @Override

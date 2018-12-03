@@ -3,9 +3,9 @@ package lv.helloit.test.tasks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -45,8 +45,8 @@ public class TaskController {
         return taskService.update(task);
     }
 
-    @PutMapping(value = "/assign")
-    public boolean assign(@RequestParam Long taskId, @RequestParam Long userId) {
+    @PutMapping(value = "/assign", produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean assign(@RequestParam(name = "taskId") Long taskId, @RequestParam Long userId) {
         return taskService.assign(taskId, userId);
     }
 }

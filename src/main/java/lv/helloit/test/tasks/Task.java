@@ -1,5 +1,7 @@
 package lv.helloit.test.tasks;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lv.helloit.test.users.User;
 
 import javax.persistence.*;

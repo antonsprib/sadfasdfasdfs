@@ -16,7 +16,7 @@ function addTask(task) {
         <td>${task.id}</td>
         <td>${task.title}</td>
         <td>${task.description}</td>
-        <td>${task.assignedUserId}</td>
+        <td>${task.user ? task.user.name + " " + task.user.lastName : ""}</td>
         <td>
             <button onclick="deleteTask(${task.id})">Delete</button>
             <a href="/fetasks/editTask.html?taskId=${task.id}">Edit</a>

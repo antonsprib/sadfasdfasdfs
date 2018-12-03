@@ -1,6 +1,7 @@
 package lv.helloit.test.tasks;
 
-import lv.helloit.test.users.UserService;
+import lv.helloit.test.users.User;
+import lv.helloit.test.users.UserDaoImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,12 @@ import java.util.Optional;
 @Service
 public class TaskService {
     private final TasksDAOImplementation tasksDAO;
+    private final UserDaoImplementation userDao;
 
     @Autowired
-    public TaskService(TasksDAOImplementation tasksDAO) {
+    public TaskService(TasksDAOImplementation tasksDAO, UserDaoImplementation userDao) {
         this.tasksDAO = tasksDAO;
+        this.userDao = userDao;
     }
 
     public Long addTask(Task t) {
@@ -45,17 +48,16 @@ public class TaskService {
     }
 
     public boolean assign(Long taskId, Long userId) {
-//        Optional<Task> task = tasksDAO.getById(taskId);
-//
-//        if (task.isPresent()) {
-//            Task unwrapped = task.get();
-//            unwrapped.setAssignedUserId(userId);
-//
-//            tasksDAO.update(unwrapped);
-//            return true;
-//        } else {
-//            return false;
-//        }
+        Optional<Task> wrappedTask = this.get(taskId);
+        Optional<User> wrappedUser = userDao.getById(userId);
+
+        if (wrappedTask.isPresent() && wrappedUser.isPresent()) {
+            Task task = wrappedTask.get();
+            task.setUser(wrappedUser.get());
+
+            this.update(task);
+            return true;
+        }
 
         return false;
     }
