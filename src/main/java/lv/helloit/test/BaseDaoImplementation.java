@@ -1,5 +1,6 @@
 package lv.helloit.test;
 
+import lv.helloit.test.users.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,9 +25,9 @@ public abstract class BaseDaoImplementation<T> implements BaseDao<T> {
         CriteriaQuery<T> query = builder.createQuery(clazz);
         query.select(query.from(clazz));
 
-        List<T> tasks = session.createQuery(query).getResultList();
-        session.close();
-        return tasks;
+        List<T> rows = session.createQuery(query).getResultList();
+//        session.close();
+        return rows;
     }
 
     @Override

@@ -1,38 +1,38 @@
 package lv.helloit.test.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class UserService {
-    private Map<Long, User> userMap = new HashMap<>();
-    private Long lastId = 0L;
+    private final UserDaoImplementation userDaoImplementation;
 
-    public Long add(User user) {
-        lastId++;
-        user.setId(lastId);
-        userMap.put(lastId, user);
-        return lastId;
+    @Autowired
+    public UserService(UserDaoImplementation userDaoImplementation) {
+        this.userDaoImplementation = userDaoImplementation;
     }
 
-    public boolean userExists(Long id) {
-        return userMap.containsKey(id);
+    public Long add(User user) {
+        return userDaoImplementation.insert(user);
     }
 
     public List<User> users() {
-        return new ArrayList<>(userMap.values());
+        List<User> users = userDaoImplementation.getAll();
+        return users;
     }
 
-    public User get(Long id) {
-        return userMap.get(id);
+    public Optional<User> get(Long id) {
+        return userDaoImplementation.getById(id);
     }
 
     public void delete (Long id) {
-        userMap.remove(id);
+        userDaoImplementation.delete(id);
     }
 
     public void update(Long id, User u) {
-        userMap.replace(id, u);
+        u.setId(id);
+        userDaoImplementation.update(u);
     }
 }

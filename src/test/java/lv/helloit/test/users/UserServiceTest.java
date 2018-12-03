@@ -7,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collection;
-
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTest {
@@ -21,7 +17,7 @@ public class UserServiceTest {
 
     @Before
     public void setUp() {
-        victim = new UserService();
+        victim = new UserService(userDaoImplementation);
     }
 
     @Test

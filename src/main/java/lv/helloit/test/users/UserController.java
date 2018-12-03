@@ -8,8 +8,12 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     public void add(@RequestBody User user) {

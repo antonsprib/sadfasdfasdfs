@@ -1,7 +1,12 @@
 package lv.helloit.test.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lv.helloit.test.tasks.Task;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "M_USERS")
@@ -17,6 +22,10 @@ public class User {
     @Column(name = "age")
     private Integer age;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private List<Task> tasks;
+
     @Override
     public String toString() {
         return "User{" +
@@ -24,6 +33,7 @@ public class User {
                 ", id=" + id +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
+                ", tasks=" + tasks.stream().map(Task::getId).map(Objects::toString).collect(Collectors.joining(", ")) +
                 '}';
     }
 
@@ -73,5 +83,13 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

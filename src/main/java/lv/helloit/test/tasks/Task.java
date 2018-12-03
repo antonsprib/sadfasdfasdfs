@@ -25,14 +25,15 @@ public class Task {
     @Column(name = "created_date")
     private Date createdDate;
 
-    public Task() {
-    }
-
-    public Task(String title, String description, User user, Date createdDate) {
-        this.title = title;
-        this.description = description;
-        this.user = user;
-        this.createdDate = createdDate;
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + (user != null ? user.getId() : "") +
+                ", createdDate=" + createdDate +
+                '}';
     }
 
     @Override
@@ -43,13 +44,13 @@ public class Task {
         return Objects.equals(id, task.id) &&
                 Objects.equals(title, task.title) &&
                 Objects.equals(description, task.description) &&
-                Objects.equals(user, task.user) &&
+                Objects.equals(user.getId(), task.user.getId()) &&
                 Objects.equals(createdDate, task.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, user, createdDate);
+        return Objects.hash(id, title, description, user.getId(), createdDate);
     }
 
     public User getUser() {
