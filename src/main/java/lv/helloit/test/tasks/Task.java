@@ -1,7 +1,8 @@
 package lv.helloit.test.tasks;
 
+import lv.helloit.test.users.User;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,19 +17,21 @@ public class Task {
     private String title;
     @Column(name = "description")
     private String description;
-    @Column(name = "assigned_user_id")
-    private Long assignedUserId;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id")
+    private User user;
+
     @Column(name = "created_date")
     private Date createdDate;
 
     public Task() {
     }
 
-    public Task(Long id, String title, String description, Long assignedUserId, Date createdDate) {
-        this.id = id;
+    public Task(String title, String description, User user, Date createdDate) {
         this.title = title;
         this.description = description;
-        this.assignedUserId = assignedUserId;
+        this.user = user;
         this.createdDate = createdDate;
     }
 
@@ -40,24 +43,21 @@ public class Task {
         return Objects.equals(id, task.id) &&
                 Objects.equals(title, task.title) &&
                 Objects.equals(description, task.description) &&
-                Objects.equals(assignedUserId, task.assignedUserId) &&
+                Objects.equals(user, task.user) &&
                 Objects.equals(createdDate, task.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, assignedUserId, createdDate);
+        return Objects.hash(id, title, description, user, createdDate);
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", assignedUserId=" + assignedUserId +
-                ", createdDate=" + createdDate +
-                '}';
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -82,14 +82,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getAssignedUserId() {
-        return assignedUserId;
-    }
-
-    public void setAssignedUserId(Long assignedUserId) {
-        this.assignedUserId = assignedUserId;
     }
 
     public Date getCreatedDate() {

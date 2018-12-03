@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tasks")
@@ -16,13 +17,13 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public Collection<TaskView> get() {
+    public Collection<Task> get() {
         LOGGER.info("Get task request");
         return taskService.get();
     }
 
     @GetMapping(value = "/{id}")
-    public TaskView getById(@PathVariable Long id) {
+    public Optional<Task> getById(@PathVariable Long id) {
         return taskService.get(id);
     }
 
