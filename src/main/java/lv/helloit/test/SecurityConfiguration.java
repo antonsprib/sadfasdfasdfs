@@ -12,18 +12,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final DefaultAuthEntryPoint entryPoint;
+    private final SecurityPropertiesBean securityProperties;
 
     @Autowired
-    public SecurityConfiguration(DefaultAuthEntryPoint entryPoint) {
+    public SecurityConfiguration(DefaultAuthEntryPoint entryPoint, SecurityPropertiesBean securityProperties) {
         this.entryPoint = entryPoint;
+        this.securityProperties = securityProperties;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.inMemoryAuthentication()
-                    .withUser("admin").password("{noop}admin").roles("ADMIN")
+                    .withUser(securityProperties.getAdminName()).password("{noop}" + securityProperties.getAdminPassword()).roles("ADMIN")
                     .and()
-                    .withUser("user1").password("{noop}securePassword").roles();
+                    .withUser(securityProperties.getUserName()).password("{noop}" + securityProperties.getUserPassword()).roles();
     }
 
     @Override
