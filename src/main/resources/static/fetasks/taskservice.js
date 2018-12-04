@@ -1,6 +1,9 @@
 function loadTasks() {
     fetch("/tasks", {
-        method: "get"
+        method: "get",
+        headers: {
+            'Authorization': 'Basic ' + btoa("admin:adminPass")
+        }
     }).then(
         resp => resp.json()
     ).then(tasks => {
@@ -37,7 +40,8 @@ function createTask() {
             description: description
         }),
         headers: {
-            "Content-Type": "application/json;charset=UTF-8"
+            "Content-Type": "application/json;charset=UTF-8",
+            'Authorization': 'Basic ' + btoa("admin:adminPass")
         }
     }).then(() => {
         window.location.href = "/index.html";
@@ -47,7 +51,10 @@ function createTask() {
 
 function deleteTask(id) {
     fetch("/tasks?taskId=" + id, {
-        method: "delete"
+        method: "delete",
+        headers: {
+            'Authorization': 'Basic ' + btoa("admin:adminPass")
+        }
     }).then((resp) => resp.json()
     ).then(successful => {
         if (successful === true) {

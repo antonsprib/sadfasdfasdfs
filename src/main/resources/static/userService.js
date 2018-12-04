@@ -1,6 +1,9 @@
 function loadUsers() {
     fetch("/users", {
-        method: "get"
+        method: "get",
+        headers: {
+            'Authorization': 'Basic ' + btoa("admin:adminPass")
+        }
     }).then(
         resp => resp.json()
     ).then(users => {
