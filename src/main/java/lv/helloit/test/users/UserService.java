@@ -3,6 +3,8 @@ package lv.helloit.test.users;
 import lv.helloit.test.tasks.Task;
 import lv.helloit.test.tasks.TasksDAOImplementation;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import java.util.*;
 
 @Component
 public class UserService {
+    private final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserDaoImplementation userDaoImplementation;
     private final TasksDAOImplementation tasksDAOImplementation;
 
@@ -24,23 +27,13 @@ public class UserService {
 
     public Long add(User user) {
         String password = generatePassword();
+        LOGGER.info("Password: " + password);
         sendPasswordEmail(user, password);
         String passwordHash = generatePasswordHash(password);
+        LOGGER.info("Password hash: " + passwordHash);
         user.setPasswordHash(passwordHash);
 
         return userDaoImplementation.insert(user);
-    }
-
-    private String generatePassword() {
-        return RandomStringUtils.random(8, true, true);
-    }
-
-    private void sendPasswordEmail(User user, String password) {
-        // todo implement
-    }
-
-    private String generatePasswordHash(String password) {
-        return Sha512DigestUtils.shaHex(password);
     }
 
     public List<User> users() {
@@ -71,5 +64,17 @@ public class UserService {
 
             userDaoImplementation.update(user);
         }
+    }
+
+    private String generatePassword() {
+        return RandomStringUtils.random(8, true, true);
+    }
+
+    private void sendPasswordEmail(User user, String password) {
+        // todo implement
+    }
+
+    private String generatePasswordHash(String password) {
+        return Sha512DigestUtils.shaHex(password);
     }
 }

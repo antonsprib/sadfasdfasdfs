@@ -13,23 +13,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final DefaultAuthEntryPoint entryPoint;
     private final SecurityPropertiesBean securityProperties;
+    private final CustomAuthenticationProvider authenticationProvider;
 
     @Autowired
-    public SecurityConfiguration(DefaultAuthEntryPoint entryPoint, SecurityPropertiesBean securityProperties) {
+    public SecurityConfiguration(DefaultAuthEntryPoint entryPoint,
+                                 SecurityPropertiesBean securityProperties,
+                                 CustomAuthenticationProvider authenticationProvider) {
         this.entryPoint = entryPoint;
         this.securityProperties = securityProperties;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.inMemoryAuthentication()
-                    .withUser(securityProperties.getAdminName())
-                        .password("{noop}" + securityProperties.getAdminPassword())
-                        .authorities("ADMIN")
-                    .and()
-                    .withUser(securityProperties.getUserName())
-                        .password("{noop}" + securityProperties.getUserPassword())
-                        .authorities("USER");
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider);
     }
 
     @Override
