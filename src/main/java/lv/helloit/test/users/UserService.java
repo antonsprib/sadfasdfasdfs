@@ -45,6 +45,10 @@ public class UserService {
         return userDaoImplementation.getById(id);
     }
 
+    public Optional<User> get(String username) {
+        return userDaoImplementation.getByUsername(username);
+    }
+
     public void delete (Long id) {
         userDaoImplementation.delete(id);
     }

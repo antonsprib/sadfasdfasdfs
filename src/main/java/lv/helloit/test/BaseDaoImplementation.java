@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseDaoImplementation<T> implements BaseDao<T> {
-    private final SessionFactory sessionFactory;
+    protected final SessionFactory sessionFactory;
 
     protected BaseDaoImplementation(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -26,7 +26,6 @@ public abstract class BaseDaoImplementation<T> implements BaseDao<T> {
         query.select(query.from(clazz));
 
         List<T> rows = session.createQuery(query).getResultList();
-//        session.close();
         return rows;
     }
 
