@@ -28,16 +28,19 @@ function createUser() {
     const name = document.getElementById("name").value;
     const lastName = document.getElementById("lastname").value;
     const age = document.getElementById("age").value;
+    const username = document.getElementById("username").value;
 
     fetch("/users", {
         method: "post",
         body: JSON.stringify({
             name: name,
             lastName: lastName,
-            age: age
+            age: age,
+            username: username
         }),
         headers: {
-            "Content-Type": "application/json;charset=UTF-8"
+            "Content-Type": "application/json;charset=UTF-8",
+            'Authorization': 'Basic ' + btoa("admin:adminPass")
         }
     }).then(() => {
         window.location.href = "/users.html";

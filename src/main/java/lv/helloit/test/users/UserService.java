@@ -19,7 +19,26 @@ public class UserService {
     }
 
     public Long add(User user) {
+        String password = generatePassword();
+        sendPasswordEmail(user, password);
+        String passwordHash = generatePasswordHash(password);
+        user.setPasswordHash(passwordHash);
+
         return userDaoImplementation.insert(user);
+    }
+
+    private String generatePassword() {
+        // todo implement
+        return "";
+    }
+
+    private void sendPasswordEmail(User user, String password) {
+        // todo implement
+    }
+
+    private String generatePasswordHash(String password) {
+        // todo implement
+        return "";
     }
 
     public List<User> users() {

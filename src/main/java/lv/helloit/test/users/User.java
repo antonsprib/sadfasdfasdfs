@@ -1,14 +1,11 @@
 package lv.helloit.test.users;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lv.helloit.test.tasks.Task;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "M_USERS")
@@ -23,6 +20,11 @@ public class User {
     private String lastName;
     @Column(name = "age")
     private Integer age;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password_hash")
+    @JsonIgnore
+    private String passwordHash;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Task> tasks;
@@ -34,7 +36,8 @@ public class User {
                 ", id=" + id +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
-                ", tasks=" + tasks.stream().map(Task::getId).map(Objects::toString).collect(Collectors.joining(", ")) +
+                ", username='" + username + '\'' +
+                ", tasks=" + tasks +
                 '}';
     }
 
@@ -46,12 +49,29 @@ public class User {
         return Objects.equals(name, user.name) &&
                 Objects.equals(id, user.id) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(age, user.age);
+                Objects.equals(age, user.age) &&
+                Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, lastName, age);
+        return Objects.hash(name, id, lastName, age, username);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getName() {

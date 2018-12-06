@@ -6,10 +6,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Component
 public class DefaultAuthEntryPoint implements AuthenticationEntryPoint {
@@ -20,8 +18,8 @@ public class DefaultAuthEntryPoint implements AuthenticationEntryPoint {
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException
-    ) throws IOException, ServletException {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    ) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         LOGGER.warn("Unsuccessful authentication attempt");
     }
 }

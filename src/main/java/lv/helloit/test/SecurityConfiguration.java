@@ -23,16 +23,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.inMemoryAuthentication()
-                    .withUser(securityProperties.getAdminName()).password("{noop}" + securityProperties.getAdminPassword()).roles("ADMIN")
+                    .withUser(securityProperties.getAdminName())
+                        .password("{noop}" + securityProperties.getAdminPassword())
+                        .authorities("ADMIN")
                     .and()
-                    .withUser(securityProperties.getUserName()).password("{noop}" + securityProperties.getUserPassword()).roles();
+                    .withUser(securityProperties.getUserName())
+                        .password("{noop}" + securityProperties.getUserPassword())
+                        .authorities("USER");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/users**").hasRole("ADMIN123")
+                .antMatchers("/users.html").permitAll()
+                .antMatchers("/users**").hasAuthority("ADMIN")
                 .antMatchers("/tasks**").authenticated()
                 .and()
                 .httpBasic().authenticationEntryPoint(entryPoint)
