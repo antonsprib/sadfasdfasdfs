@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final DefaultAuthEntryPoint entryPoint;
-    private final SecurityPropertiesBean securityProperties;
     private final CustomAuthenticationProvider authenticationProvider;
 
     @Autowired
@@ -20,7 +19,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                  SecurityPropertiesBean securityProperties,
                                  CustomAuthenticationProvider authenticationProvider) {
         this.entryPoint = entryPoint;
-        this.securityProperties = securityProperties;
         this.authenticationProvider = authenticationProvider;
     }
 
@@ -35,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/users.html").permitAll()
-                .antMatchers("/users**").hasAuthority("ADMIN")
+                .antMatchers("/users**").authenticated()
                 .antMatchers("/tasks**").authenticated()
                 .and()
                 .httpBasic().authenticationEntryPoint(entryPoint)
