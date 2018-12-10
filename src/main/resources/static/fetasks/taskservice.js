@@ -1,8 +1,11 @@
+var username = "";
+var password = "";
+
 function loadTasks() {
     fetch("/tasks", {
         method: "get",
         headers: {
-            'Authorization': 'Basic ' + btoa("admin:adminPass")
+            'Authorization': 'Basic ' + btoa(username + ":" + password)
         }
     }).then(
         resp => resp.json()
@@ -26,6 +29,10 @@ function addTask(task) {
         </td>
     `;
     document.getElementById("table-body").appendChild(tr);
+}
+
+function saveCredentials() {
+
 }
 
 

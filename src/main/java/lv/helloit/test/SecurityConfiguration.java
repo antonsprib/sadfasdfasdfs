@@ -16,7 +16,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public SecurityConfiguration(DefaultAuthEntryPoint entryPoint,
-                                 SecurityPropertiesBean securityProperties,
                                  CustomAuthenticationProvider authenticationProvider) {
         this.entryPoint = entryPoint;
         this.authenticationProvider = authenticationProvider;
