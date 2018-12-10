@@ -3,6 +3,7 @@ package lv.helloit.test.users;
 import lv.helloit.test.tasks.Task;
 import lv.helloit.test.tasks.TasksDAOImplementation;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,7 @@ public class UserService {
     }
 
     public List<User> users() {
-        List<User> users = userDaoImplementation.getAll();
-        return users;
+        return userDaoImplementation.getAll();
     }
 
     public Optional<User> get(Long id) {

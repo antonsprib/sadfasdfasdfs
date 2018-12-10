@@ -25,8 +25,7 @@ public abstract class BaseDaoImplementation<T> implements BaseDao<T> {
         CriteriaQuery<T> query = builder.createQuery(clazz);
         query.select(query.from(clazz));
 
-        List<T> rows = session.createQuery(query).getResultList();
-        return rows;
+        return session.createQuery(query).getResultList();
     }
 
     @Override

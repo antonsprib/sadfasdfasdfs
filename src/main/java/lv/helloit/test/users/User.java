@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lv.helloit.test.tasks.Task;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "M_USERS")
+@Valid
 public class User {
     @Column(name = "name")
     private String name;
@@ -21,6 +24,7 @@ public class User {
     @Column(name = "age")
     private Integer age;
     @Column(name = "username")
+    @NotBlank
     private String username;
     @Column(name = "password_hash")
     @JsonIgnore
