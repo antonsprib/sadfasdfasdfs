@@ -2,7 +2,7 @@ function loadUsers() {
     fetch("/users", {
         method: "get",
         headers: {
-            'Authorization': 'Basic ' + btoa("admin:adminPass")
+            'Authorization': 'Basic ' + btoa("FBI:adminPass")
         }
     }).then(
         resp => resp.json()
@@ -40,7 +40,7 @@ function createUser() {
         }),
         headers: {
             "Content-Type": "application/json;charset=UTF-8",
-            'Authorization': 'Basic ' + btoa("admin:adminPass")
+            'Authorization': 'Basic ' + btoa("FBI:adminPass")
         }
     }).then(() => {
         window.location.href = "/users.html";

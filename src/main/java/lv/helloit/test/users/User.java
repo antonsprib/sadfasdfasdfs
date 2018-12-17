@@ -25,6 +25,7 @@ public class User {
     private Integer age;
     @Column(name = "username")
     @NotBlank
+    // todo rename to email
     private String username;
     @Column(name = "password_hash")
     @JsonIgnore

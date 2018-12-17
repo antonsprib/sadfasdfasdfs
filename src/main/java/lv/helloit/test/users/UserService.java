@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
 import java.util.*;
@@ -73,7 +74,16 @@ public class UserService {
     }
 
     private void sendPasswordEmail(User user, String password) {
-        // todo implement
+        RestTemplate restTemplate = new RestTemplate();
+
+        String body = "You've been registered%20to%20blablabal.%20Your%20password:%20" + password;
+
+        String response = restTemplate.getForObject(
+                "http://localhost:8888/sendTextMail?body=" + body +
+                        "&recipientAddress=" + user.getUsername() +
+                        "&subject=Your%20password", String.class);
+
+        LOGGER.info(response);
     }
 
     private String generatePasswordHash(String password) {
