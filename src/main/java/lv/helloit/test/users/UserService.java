@@ -89,9 +89,10 @@ public class UserService {
                 .queryParam("body", "Your password is: " + password)
                 .build("");
 
-        String response = restTemplate.getForObject(url, String.class);
+        SendMailResponse response = restTemplate.getForObject(url, SendMailResponse.class);
 
-        LOGGER.info(response);
+        LOGGER.info("Mail send successfully: " + response.isSuccessful());
+        LOGGER.info(response.toString());
     }
 
     private String generatePasswordHash(String password) {
