@@ -27,13 +27,13 @@ public class UserDaoImplementation extends BaseDaoImplementation<User> {
         return super.getById(id, User.class);
     }
 
-    public Optional<User> getByUsername(String username) {
+    public Optional<User> getByEmail(String email) {
         Session session = sessionFactory.openSession();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         Root<User> root = query.from(User.class);
-        query.where(builder.equal(root.get("username"), username));
+        query.where(builder.equal(root.get("email"), email));
         query.select(root);
 
         User u = session.createQuery(query).getSingleResult();

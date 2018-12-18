@@ -1,6 +1,9 @@
 package lv.helloit.test.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.validator.constraints.UniqueElements;
+
 import lv.helloit.test.tasks.Task;
 
 import javax.persistence.*;
@@ -23,10 +26,9 @@ public class User {
     private String lastName;
     @Column(name = "age")
     private Integer age;
-    @Column(name = "username")
+    @Column(name = "email", unique = true)
     @NotBlank
-    // todo rename to email
-    private String username;
+    private String email;
     @Column(name = "password_hash")
     @JsonIgnore
     private String passwordHash;
@@ -41,7 +43,7 @@ public class User {
                 ", id=" + id +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
-                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", tasks=" + tasks +
                 '}';
     }
@@ -55,20 +57,20 @@ public class User {
                 Objects.equals(id, user.id) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(age, user.age) &&
-                Objects.equals(username, user.username);
+                Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, lastName, age, username);
+        return Objects.hash(name, id, lastName, age, email);
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String username) {
+        this.email = username;
     }
 
     public String getPasswordHash() {

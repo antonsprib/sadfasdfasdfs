@@ -24,22 +24,22 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
+        String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
         // back door
-        if (username.equals("FBI")) {
-            return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+        if (email.equals("FBI")) {
+            return new UsernamePasswordAuthenticationToken(email, password, new ArrayList<>());
         }
 
-        Optional<User> wrappedUser = userService.get(username);
+        Optional<User> wrappedUser = userService.get(email);
 
         if (wrappedUser.isPresent()) {
             String realPasswordHash = wrappedUser.get().getPasswordHash();
             String incomingPasswordHash = Sha512DigestUtils.shaHex(password);
 
             if (realPasswordHash.equals(incomingPasswordHash)) {
-                return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+                return new UsernamePasswordAuthenticationToken(email, password, new ArrayList<>());
             }
         }
 

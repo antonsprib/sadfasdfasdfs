@@ -1,7 +1,5 @@
 package lv.helloit.test.users;
 
-import lv.helloit.test.tasks.Task;
-import lv.helloit.test.tasks.TasksDAOImplementation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.ByteArrayInputStream;
-import java.util.*;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
+import lv.helloit.test.tasks.Task;
+import lv.helloit.test.tasks.TasksDAOImplementation;
 
 @Component
 public class UserService {
@@ -45,7 +48,7 @@ public class UserService {
     }
 
     public Optional<User> get(String username) {
-        return userDaoImplementation.getByUsername(username);
+        return userDaoImplementation.getByEmail(username);
     }
 
     public void delete (Long id) {
@@ -76,12 +79,17 @@ public class UserService {
     private void sendPasswordEmail(User user, String password) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String body = "You've been registered%20to%20blablabal.%20Your%20password:%20" + password;
+        URI url = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("localhost")
+                .port(8888)
+                .path("sendTextMail")
+                .queryParam("recipientAddress", user.getEmail())
+                .queryParam("subject", "Your password")
+                .queryParam("body", "Your password is: " + password)
+                .build("");
 
-        String response = restTemplate.getForObject(
-                "http://localhost:8888/sendTextMail?body=" + body +
-                        "&recipientAddress=" + user.getUsername() +
-                        "&subject=Your%20password", String.class);
+        String response = restTemplate.getForObject(url, String.class);
 
         LOGGER.info(response);
     }
